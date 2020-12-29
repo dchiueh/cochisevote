@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      h2,
+      h3 {
+        margin: 10px;
+        font-size: 1.2em;
+      }
+      h3 {
+        font-size: 1em;
+      }
+      p {
+        font-size: 0.85em;
+        margin: 10px;
+        text-align: left;
+      }
+      .map-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: rgba(211, 211, 211, 0.5);
+        margin-right: 20px;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+        border-radius: 3px;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      #features {
+        top: 0;
+        height: 140px;
+        margin-top: 20px;
+        width: 250px;
+      }
+
+      #legend {
+        padding: 10px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 18px;
+        height: 150px;
+        margin-bottom: 40px;
+        width: 100px;
+      }
+
+      .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="map-overlay" id="features">
+      <h2>How Cochise County voted in 2016</h2>
+      <div id="pd"><p>Hover over a state!</p></div>
+    </div>
+    <div class="map-overlay" id="legend"></div>
+
+    <script>
+      // define access token
+      mapboxgl.accessToken = 'pk.eyJ1IjoiZGNoaXVlaCIsImEiOiJja2l5eXh2M3EwYnNsMnBzNGs3YTg3eGswIn0.WoaIx130NIzVVJ2yoSIACA';
+
+      //create map
+      var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/dchiueh/ckj1zgx2a30f319nx79rdvvh7' // replace this with your style URL
+      });
+
+      map.on('load', function() {
+        var layers = ['4 Rep/Dem', '3 Rep/Dem', '2 Rep/Dem', '1 Rep/Dem', '2 Dem/Rep','3 Dem/Rep', '4 Dem/Rep'];
+        var colors = ['#ff0000', '#FF4e4e', '#FF9d9d', '#FFFFFF', '#9D9DFF', '#4F4FFF', '#0000FF'];
+        for (i = 0; i < layers.length; i++) {
+          var layer = layers[i];
+          var color = colors[i];
+          var item = document.createElement('div');
+          var key = document.createElement('span');
+          key.className = 'legend-key';
+          key.style.backgroundColor = color;
+
+          var value = document.createElement('span');
+          value.innerHTML = layer;
+          item.appendChild(key);
+          item.appendChild(value);
+          legend.appendChild(item);
+        }
+      });
+
+      map.on('mousemove', function(e) {
+        var states = map.queryRenderedFeatures(e.point, {
+            layers: ['cochiseprecincts2016']
+        });
+
+        if (states.length > 0) {
+            var ratio = states[0].properties.vote;
+            ratio = Math.round(ratio * 100) / 100;
+            if (ratio > 1) {
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p><strong><em>' + ratio + '</strong> Republican votes per Democratic vote</em></p>';
+            } else {
+                ratio = 100 / (100 * ratio);
+                ratio = Math.round(ratio * 100) / 100;
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p><strong><em>' + ratio + '</strong> Democratic votes per Republican vote</em></p>';                
+            }
+        } else {
+            document.getElementById('pd').innerHTML = '<p>Hover over a precinct!</p>';
+        }
+        });
+    </script>
+  </body>
+</html>
