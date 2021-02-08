@@ -93,7 +93,7 @@
 
       map.on('load', function() {
         var layers = ['R +60', 'R +45', 'R +30', 'R +15', 'D +15','D +30', 'D +45', 'D +60'];
-        var colors = ['#ff0000', '#FF4e4e', '#FF9d9d', '#FFFFFF', '#9D9DFF', '#4F4FFF', '#0000FF', '#00009e'];
+        var colors = ['#9e0000', '#ff0000', '#FF4e4e', '#FF9d9d', '#9D9DFF', '#4F4FFF', '#0000FF', '#00009e'];
         for (i = 0; i < layers.length; i++) {
           var layer = layers[i];
           var color = colors[i];
@@ -117,13 +117,12 @@
 
         if (states.length > 0) {
             var ratio = states[0].properties.vote;
-            ratio = Math.round(ratio * 100) / 100;
-            if (ratio > 1) {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p><strong><em>' + ratio + '</strong> Republican votes per Democratic vote</em></p>';
+            if (ratio > 0) {
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Republicans received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Democrats</em></p>';
             } else {
                 ratio = 100 / (100 * ratio);
                 ratio = Math.round(ratio * 100) / 100;
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p><strong><em>' + ratio + '</strong> Democratic votes per Republican vote</em></p>';                
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Democrats received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Republicans</p>';                
             }
         } else {
             document.getElementById('pd').innerHTML = '<p>Hover over a precinct!</p>';
