@@ -75,10 +75,10 @@
   </head>
   <body>
     <div id="map"></div>
-    <div class="map-overlay" id="features">
+ <!--   <div class="map-overlay" id="features">
       <h2>How Cochise County voted in 2016</h2>
       <div id="pd"><p>Hover over a state!</p></div>
-    </div>
+    </div> -->
     <div class="map-overlay" id="legend"></div>
 
     <script>
@@ -115,15 +115,12 @@
             layers: ['cochiseprecincts2016']
         });
 
-        if (states.length > 0) {
+      if (states.length > 0) {
             var ratio = states[0].properties.vote;
-            ratio = Math.round(ratio * 100) / 100;
-            if (ratio > 1) {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p><strong><em>' + ratio + '</strong> Republican votes per Democratic vote</em></p>';
+            if (ratio > 0) {
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Republicans received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Democrats</em></p>';
             } else {
-                ratio = 100 / (100 * ratio);
-                ratio = Math.round(ratio * 100) / 100;
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p><strong><em>' + ratio + '</strong> Democratic votes per Republican vote</em></p>';                
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Democrats received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Republicans</p>';                
             }
         } else {
             document.getElementById('pd').innerHTML = '<p>Hover over a precinct!</p>';
