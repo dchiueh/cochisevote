@@ -75,10 +75,10 @@
   </head>
   <body>
     <div id="map"></div>
-    <div class="map-overlay" id="features">
+<!--    <div class="map-overlay" id="features">
       <h2>How Cochise County voted in 2020</h2>
       <div id="pd"><p>Hover over a state!</p></div>
-    </div>
+    </div> -->
     <div class="map-overlay" id="legend"></div>
 
     <script>
@@ -120,8 +120,6 @@
             if (ratio > 0) {
                 document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Republicans received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Democrats</em></p>';
             } else {
-                ratio = 100 / (100 * ratio);
-                ratio = Math.round(ratio * 100) / 100;
                 document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Democrats received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Republicans</p>';                
             }
         } else {
