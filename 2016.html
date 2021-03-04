@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -55,11 +54,13 @@
         width: 250px;
       }
 
-      #legend {
+      #legend {       
+        bottom: 0;
         padding: 10px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        font-size:10px;
         line-height: 18px;
-        height: 150px;
+        height: 180px;
         margin-bottom: 40px;
         width: 100px;
       }
@@ -77,8 +78,9 @@
     <div id="map"></div>
       <div class="map-overlay" id="features">
         <h2>How Cochise County voted in 2016</h2>
-      <div id="pd"><p>Hover over a state!</p></div>
-    <div class="map-overlay" id="legend"></div>
+        <div id="pd"></div> 
+    </div>
+    <div class="map-overlay" id="legend">Leader margin in percentage points</div>
 
     <script>
       // define access token
@@ -91,6 +93,9 @@
       });
 
       map.on('load', function() {
+        
+        map.getCanvas().style.cursor = 'default';
+
         var layers = ['R+60', 'R+45', 'R+30', 'R+15', '0', 'D+15', 'D+30', 'D+45', 'D+60'];
         var colors = ['#9e0000', '#ff0000', '#ff4d4d', '#ff8a8a', '#ffffff', '#9e9eff', '#4d4dff', '#0000ff', '#00009e'];
         for (i = 0; i < layers.length; i++) {
@@ -113,18 +118,40 @@
         var states = map.queryRenderedFeatures(e.point, {
             layers: ['cochiseprecincts2016']
         });
-
+        
       if (states.length > 0) {
             var ratio = states[0].properties.vote;
             if (ratio > 0) {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Republicans received<strong><em>' + ratio + '</strong> more votes in percentage points than Democrats</em></p>';
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Donald Trump (R) received <strong>' + Math.round(ratio) + '</strong> more votes in percentage points than Hillary Clinton (D)</p>';
             } else {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Democrats received<strong><em>' + (ratio*-1) + '</strong> more votes in percentage points than Republicans</p>';                
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Democrats received <strong>' + Math.round(ratio*-1) + '</strong> more votes in percentage points than Republicans</p>';                
             }
         } else {
             document.getElementById('pd').innerHTML = '<p>Hover over a precinct!</p>';
         }
         });
+      
+      const visibleMarkers = [];
+    this.map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+            visibleMarkers.push(layer);
+        }
+    });
+
+    // Ensure there's at least one visible Marker
+    if (visibleMarkers.length > 0) {
+
+        // Create bounds from first Marker then extend it with the rest
+        const markersBounds = L.latLngBounds([visibleMarkers[0].getLatLng()]);
+        visibleMarkers.forEach((marker) => {
+            markersBounds.extend(marker.getLatLng());
+        });
+
+        // Fit the map with the visible markers bounds
+        this.map.flyToBounds(markersBounds, {
+            padding: L.point(36, 36), animate: true,
+        });
+    }
     </script>
   </body>
 </html>
