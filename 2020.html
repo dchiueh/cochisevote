@@ -56,10 +56,12 @@
       }
 
       #legend {
+        bottom: 0;
         padding: 10px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         line-height: 18px;
-        height: 150px;
+        height: 180px;
+        font-size: 10px;
         margin-bottom: 40px;
         width: 100px;
       }
@@ -75,11 +77,11 @@
   </head>
   <body>
     <div id="map"></div>
-<!--    <div class="map-overlay" id="features">
+<    <div class="map-overlay" id="features">
       <h2>How Cochise County voted in 2020</h2>
-      <div id="pd"><p>Hover over a state!</p></div>
-    </div> -->
-    <div class="map-overlay" id="legend"></div>
+      <div id="pd"><p></p></div>
+    </div>
+    <div class="map-overlay" id="legend">Leader margin in percentage points</div>
 
     <script>
       // define access token
@@ -92,8 +94,9 @@
       });
 
       map.on('load', function() {
-        var layers = ['R +60', 'R +45', 'R +30', 'R +15', 'D +15','D +30', 'D +45', 'D +60'];
-        var colors = ['#9e0000', '#ff0000', '#FF4e4e', '#FF9d9d', '#9D9DFF', '#4F4FFF', '#0000FF', '#00009e'];
+        map.getCanvas().style.cursor = 'default';
+        var layers = ['R+60', 'R+45', 'R+30', 'R+15', '0', 'D+15','D +30', 'D +45', 'D +60'];
+        var colors = ['#9e0000', '#ff0000', '#FF4d4d', "#ff8a8a", '#fffff', '#9E9EFF', '#4D4DFF', '#0000FF', '#00009e'];
         for (i = 0; i < layers.length; i++) {
           var layer = layers[i];
           var color = colors[i];
@@ -118,9 +121,9 @@
         if (states.length > 0) {
             var ratio = states[0].properties.vote;
             if (ratio > 0) {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Republicans received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Democrats</em></p>';
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Donald Trump (R) received <strong>' + Math.round(ratio) + '</strong> more votes in percentage points than Hillary Clinton (D)</p>';
             } else {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>'Democrats received' + <strong><em>' + ratio + '</strong> more votes in percentage points than Republicans</p>';                
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Democrats received <strong>' + Math.round(ratio*-1) + '</strong> more votes in percentage points than Republicans</p>';                
             }
         } else {
             document.getElementById('pd').innerHTML = '<p>Hover over a precinct!</p>';
