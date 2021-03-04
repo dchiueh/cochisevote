@@ -121,9 +121,9 @@
         if (states.length > 0) {
             var ratio = states[0].properties.vote;
             if (ratio > 0) {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Donald Trump (R) received <strong>' + Math.round(ratio) + '</strong> more votes in percentage points than Hillary Clinton (D)</p>';
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Donald Trump (R) received <strong>' + Math.round(ratio) + '</strong> more votes in percentage points than Joe Biden (D)</p>';
             } else {
-                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Democrats received <strong>' + Math.round(ratio*-1) + '</strong> more votes in percentage points than Republicans</p>';                
+                document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.VANPCTNAME + '</strong></h3><p>Joe Biden (D) received <strong>' + Math.round(ratio*-1) + '</strong> more votes in percentage points than Donald Trump (R)</p>';                
             }
         } else {
             document.getElementById('pd').innerHTML = '<p>Hover over a precinct!</p>';
